@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-lanchonete-deployment
+  namespace: lanchonete-ns
+  labels:
+    app: lanchonete
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lanchonete
+  template:
+    metadata:
+      labels:
+        app: lanchonete
+    spec:
+      containers:
+        - name: app-lanchonete
+          image: 327306512886.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-3:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: tech_challenge_host
+              valueFrom:
+                configMapKeyRef:
+                  name: app-lanchonete-configmap
+                  key: ngrok_url
+            - name: DATASOURCE_DRIVER_CLASS_NAME
+              value: org.postgresql.Driver
+            - name: JPA_DIALECT
+              value: org.hibernate.dialect.PostgreSQLDialect
+            - name: DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-lanchonete-configmap
+                  key: datasource_url
+            - name: DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: lanchonete-secret
+                  key: datasource_username
+            - name: DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lanchonete-secret
+                  key: datasource_password
+            - name: ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: lanchonete-secret
+                  key: access_token
+          readinessProbe:
+            httpGet:
+              path: /api/v1/actuator/health
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v1/actuator/health
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 10
