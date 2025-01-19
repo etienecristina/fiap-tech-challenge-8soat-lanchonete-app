@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: lanchonete-configmap
-type: Opaque
-data:
-  DATASOURCE_PASSWORD: "changeit"
-  DATASOURCE_USERNAME: "changeit"
-  ACCESS_TOKEN: "TEST-634035385164329-010514-e2118ed65f2fee2bfa807c010cb2770d-529352009"
