@@ -1,7 +1,12 @@
 apiVersion: v1
-kind: ServiceAccount
+kind: Service
 metadata:
-  name: ecr-access
-  namespace: default
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::327306512886:role/aws-service-role/eks.amazonaws.com/AWSServiceRoleForAmazonEKS
+  name: bd-lanchonete-service
+  namespace: lanchonete-ns
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: bd-lanchonete

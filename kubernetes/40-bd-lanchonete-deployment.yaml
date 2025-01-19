@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bd-lanchonete-deployment
+  namespace: ns-lanchonete
+  labels:
+    app: bd-lanchonete
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bd-lanchonete
+  template:
+    metadata:
+      labels:
+        app: bd-lanchonete
+    spec:
+      containers:
+        - name: bd-lanchonete
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: lanchonete
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: lanchonete-secret
+                  key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lanchonete-secret
+                  key: postgres_password
