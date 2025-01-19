@@ -63,5 +63,5 @@ jobs:
         run: |
           kubectl apply -f kubernetes/service-account.yaml --validate=false
           kubectl apply -f kubernetes/service.yaml --validate=false
-          kubectl apply -f kubernetes/secret.yaml --validate=false
+          kubectl apply -f kubernetes/configmap.yaml --validate=false
           kubectl apply -f kubernetes/deployment.yaml --validate=false

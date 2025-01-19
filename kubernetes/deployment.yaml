@@ -24,6 +24,6 @@ spec:
           - name: ACCESS_TOKEN
             valueFrom:
               secretKeyRef:
-                name: lanchonete-secret
+                name: lanchonete-configmap
                 key: ACCESS_TOKEN
 
