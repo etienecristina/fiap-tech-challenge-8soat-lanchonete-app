@@ -51,3 +51,17 @@ jobs:
           docker build -t app-lanchonete:latest .
           docker tag app-lanchonete:latest 327306512886.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-3:latest
           docker push 327306512886.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-3:latest
+
+      - name: Update Kube Config
+        run: aws eks update-kubeconfig --name fiap-tech-challenge-8soat-lanchonete-eks --region us-east-1
+
+      - name: Test Kube Config
+        run: |
+          kubectl get nodes
+
+      - name: Deploy Application
+        run: |
+          kubectl apply -f kubernetes/service-account.yaml --validate=false
+          kubectl apply -f kubernetes/service.yaml --validate=false
+          kubectl apply -f kubernetes/secret.yaml --validate=false
+          kubectl apply -f kubernetes/deployment.yaml --validate=false
