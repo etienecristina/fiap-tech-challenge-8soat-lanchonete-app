@@ -1,0 +1,39 @@
+services:
+  bd_lanchonete:
+    platform: linux/x86_64
+    container_name: bd_lanchonete
+    image: postgres:15
+    env_file:
+      - .env
+    networks:
+      - net_lanchonete
+    volumes:
+      - dados_lanchonete:/var/lib/postgresql/data
+    ports:
+      ## host:container
+      - "5432:5432"
+    expose:
+      - "5432"
+
+  app:
+    container_name: app_lanchonete
+    build:
+      context: "./"
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    networks:
+      - net_lanchonete
+    depends_on:
+      - bd_lanchonete
+    links:
+      - bd_lanchonete
+
+volumes:
+  dados_lanchonete:
+
+networks:
+  net_lanchonete:
+    driver: bridge
