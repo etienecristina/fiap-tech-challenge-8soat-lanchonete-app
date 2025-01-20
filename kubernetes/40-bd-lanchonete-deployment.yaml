@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bd-lanchonete-deployment
-  namespace: ns-lanchonete
+  namespace: lanchonete-ns
   labels:
     app: bd-lanchonete
 spec:
